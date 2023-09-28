@@ -57,7 +57,7 @@ function woocommerce_product_info() {
 						
 						$str = "<s>৳".$data[0]['regular_price']."</s> ৳".$data[0]['price'];
 						echo ' <div id="price">'.$str.'</div>';
-		echo"<label class='form-control-label'' for='pubgplayerid''>Player ID :<span class='show_required'> *</span></label><input class='input-field' name='player_id' placeholder='এখানে আপনার গেমের Player ID বসান'  data-errormsg='দয়া করে নিচের বক্সে আপনার গেমের Player ID বসান' type='text'>";
+		echo"<label class='form-control-label'' for='pubgplayerid''><b>Player ID :</b><span class='show_required'> *</span></label><input class='input-field' name='player_id' placeholder='এখানে আপনার গেমের Player ID বসান'  data-errormsg='দয়া করে নিচের বক্সে আপনার গেমের Player ID বসান' type='text'>";
 						
 		
 		//echo '<form method="POST" action="">';
@@ -65,30 +65,33 @@ function woocommerce_product_info() {
 		//echo  '<input type="text" name="player_id" id="player_id" placeholder="Player ID">';
 		
 		echo "";
-		
+		echo '<input type="hidden" name="product_id" id="product_id" value="'.$product_id.'">';
 		echo '<input type="hidden" name="variation_id" id="variation_id">';
 		//echo '<input type="hidden" id="product_id">';
 		$product = get_product($product_id);
 echo '
 
-  <div style="display:flex;" class="display_b">
 
-<div style="width:25%"></div>
 
-<div class="main_11">
-		  <div style="display:flex; margin-top:10px">
+
+<div class="main_11" style="display:flex;">
+
+<div class="cll1" style="width:10%"></div>
+		  <div class="cll3" style="display:flex; margin-top:10px;width:80%;justify-content: center;">
 		<div class="input-group">
 			<input type="button" value="-" class="button-minus" data-field="quantity">
 			<input type="number" step="1" max="" value="1"name="quantity" id="quantity" class="quantity-field">
 			<input type="button" value="+" class="button-plus" data-field="quantity">
 
-		<input type="Submit" class="main_sub" style="background:#fb711d; color:white;" value="GO PAYMENT" onClick="add_to_cart();">
+	<input type="Submit" class="main_sub" style="background:#fb711d; color:white;" value="GO PAYMENT" onClick="add_to_cart();">
 
-		  </div>
   </div>
-<div style="width:25%"></div>
 
-<div>
+  </div> 
+  <div  class="cll1" style="width:10%"></div>
+  
+  </div>
+
 
 
 ';
@@ -98,17 +101,37 @@ echo '
 
 		?>
 
+
+
+
+
  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+
+
+
+
+
 <style>
+	
+	
+	label.form-control-label {
+    margin-top: 40px;
+}
 
 input#quantity {
     position: relative;
     top: -1px;
 }
 		input.main_sub {
-    padding: 8px;
-    margin: 15px 16px 20px 10px;
+	    font-size: 13px;
+    padding: 11px 20px;
+    border-radius: 2px;
+ margin: 1px 16px 0px 0px;
+    font-weight: 600;
 }
 
     
@@ -142,7 +165,7 @@ input::-webkit-inner-spin-button {
   min-width: 38px;
   width: auto;
   transition: all 300ms ease;
-	border: 2px solid #bbb;
+	border: 2px solid #e6e6e6;
 }
 	
 	
@@ -166,7 +189,7 @@ input::-webkit-inner-spin-button {
 }
 
 .input-group .quantity-field {
-	border: 2px solid #bbb;
+	border: 2px solid #e6e6e6;
   position: relative;
   height: 45px;
   left: -6px;
@@ -235,6 +258,18 @@ $('.input-group').on('click', '.button-minus', function(e) {
     width: 46%!important;
 }
 		
+		button.tbclass {
+    font-size: 12px;
+}
+		
+		
+		.cll3{
+			width:100%!important;
+		}
+		.cll1{
+			display:none!important;
+		}
+		
 		.display_b{
 			display:block !important;
 		}
@@ -263,6 +298,8 @@ button.tbclass:hover{
 }
 
 button.tbclass {
+	    font-size: 15px;
+	    font-family: lato !important;
     width: 48%;
     margin-right: 10px;
     margin-top: 10px;
@@ -272,7 +309,7 @@ button.tbclass {
     background: white;
     color: black;
    border: 2px solid #ddd;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 	
 		button.tbclass:hover{
@@ -297,22 +334,33 @@ button.tbclass {
 	 
  }
  
- 	var jq = jQuery.noConflict();
+ 	//var jq = jQuery.noConflict();
  function add_to_cart(){	
-	var data = { 
-					product_id   : jq('#product_id').val(),
-					quantity   : jq('#quantity').val(),
-					variation_id   : jq('#variation_id').val(),
-					player_id   : jq('#player_id').val(),
-				};
-				
-	jq.post(<?=plugin_dir_url( __FILE__ ) . 'ajax_add_cart.php'?>,
-		   data, 
-		   function(response) {
-					  obj = JSON.parse(response);
-					  console.log(obj);
-					  alert(obj.status);
-				 });
+	 
+	 $.ajax({
+						type: "POST", 
+						url: "<?=plugin_dir_url( __FILE__ ) . 'ajax_add_cart.php'?>",
+						data: { 								
+									product_id   : $('#product_id').val(),
+									quantity   : $('#quantity').val(),
+									variation_id   : $('#variation_id').val(),
+									player_id   : $('#player_id').val(),
+							  },
+					success: function (data, text) {				
+						    
+							var obj = JSON.parse(data);
+						
+						  if(obj.status=='success'){
+							  window.location = 'https://bbc.bornoshopbd.com/cart';
+							  
+						  }
+					  },
+					  error: function (xhr, ajaxOptions, thrownError) {
+							alert(xhr.status);
+							alert(thrownError);
+						  }
+					});
+	 
  }
  </script>
 
