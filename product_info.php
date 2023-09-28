@@ -4,7 +4,7 @@ session_start();
   Plugin Name: WooCommerce Product Info
   Plugin URI: 
   Description: 
-  Author: 
+  Author: Amirul Momenin
   Version: 
   Author 
   License: 
