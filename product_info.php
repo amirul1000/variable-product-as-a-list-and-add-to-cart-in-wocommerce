@@ -9,6 +9,31 @@ session_start();
   Author 
   License: 
  **/
+
+add_action('woocommerce_checkout_order_processed', 'action_checkout_order_processed', 10, 1);
+function action_checkout_order_processed( $order_id ) {
+		     $order = wc_get_order( $order_id );
+		     $cart = WC()->cart->get_cart();
+			 $k=0;
+			
+			foreach ( $order->get_items() as $item) {
+			    $j=0;
+				$player_id = 0;
+				foreach($cart as $key=>$cart_item){				 
+				  if($k==$j){ 
+				     $player_id = $cart_item['player_id'];
+				    
+				    break;
+				  }
+				  $j++;
+				}
+				$k++;
+				$item->set_name( $item->get_name() .' -Player ID:'.$player_id  );
+				$item->save();
+			}
+		   $order->save();
+}
+
  // Add Shortcode
 add_shortcode( 'wooc-product-info', 'woocommerce_product_info' );
 
@@ -351,7 +376,7 @@ button.tbclass {
 							var obj = JSON.parse(data);
 						
 						  if(obj.status=='success'){
-							  window.location = 'https://bbc.bornoshopbd.com/cart';
+							  window.location = '<?=site_url()?>/index.php/cart';
 							  
 						  }
 					  },
